@@ -18,10 +18,12 @@ namespace HorseStep
             delayTrackBar.Minimum = 0;
             delayTrackBar.Maximum = 1000;
             delayTrackBar.Value = delay; // Начальная задержка
-            delayTrackBar.TickFrequency = 100; // Шаг изменения
+            delayTrackBar.TickFrequency = 10; // Шаг изменения
 
             // Добавляем обработчик для изменения значения ползунка
             delayTrackBar.Scroll += new EventHandler(delayTrackBar_Scroll);
+
+            this.Text = "Задача о ходе коня";
         }
 
         private void ClearResources()

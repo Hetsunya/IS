@@ -35,12 +35,13 @@
             panel = new Panel();
             StartButton = new Button();
             delayTrackBar = new TrackBar();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)delayTrackBar).BeginInit();
             SuspendLayout();
             // 
             // sizeN
             // 
-            sizeN.Location = new Point(1052, 22);
+            sizeN.Location = new Point(798, 22);
             sizeN.Name = "sizeN";
             sizeN.Size = new Size(194, 31);
             sizeN.TabIndex = 0;
@@ -48,7 +49,7 @@
             // 
             // sizeM
             // 
-            sizeM.Location = new Point(1052, 72);
+            sizeM.Location = new Point(798, 72);
             sizeM.Name = "sizeM";
             sizeM.Size = new Size(194, 31);
             sizeM.TabIndex = 1;
@@ -56,7 +57,7 @@
             // 
             // StartPointX
             // 
-            StartPointX.Location = new Point(1052, 120);
+            StartPointX.Location = new Point(798, 120);
             StartPointX.Name = "StartPointX";
             StartPointX.Size = new Size(194, 31);
             StartPointX.TabIndex = 2;
@@ -64,7 +65,7 @@
             // 
             // StartPointY
             // 
-            StartPointY.Location = new Point(1052, 172);
+            StartPointY.Location = new Point(798, 172);
             StartPointY.Name = "StartPointY";
             StartPointY.Size = new Size(194, 31);
             StartPointY.TabIndex = 3;
@@ -72,14 +73,14 @@
             // 
             // panel
             // 
-            panel.Location = new Point(28, 22);
+            panel.Location = new Point(12, 22);
             panel.Name = "panel";
-            panel.Size = new Size(600, 600);
+            panel.Size = new Size(780, 600);
             panel.TabIndex = 5;
             // 
             // StartButton
             // 
-            StartButton.Location = new Point(1109, 284);
+            StartButton.Location = new Point(855, 284);
             StartButton.Name = "StartButton";
             StartButton.Size = new Size(90, 42);
             StartButton.TabIndex = 6;
@@ -89,17 +90,28 @@
             // 
             // delayTrackBar
             // 
-            delayTrackBar.Location = new Point(1052, 209);
+            delayTrackBar.Location = new Point(798, 209);
             delayTrackBar.Name = "delayTrackBar";
             delayTrackBar.Size = new Size(194, 69);
             delayTrackBar.TabIndex = 7;
             delayTrackBar.Scroll += delayTrackBar_Scroll;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(814, 256);
+            label1.Name = "label1";
+            label1.Size = new Size(178, 25);
+            label1.TabIndex = 8;
+            label1.Text = "Время задержки, мс";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1258, 664);
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(1011, 635);
+            Controls.Add(label1);
             Controls.Add(delayTrackBar);
             Controls.Add(StartButton);
             Controls.Add(panel);
@@ -123,5 +135,6 @@
         private Panel panel;
         private Button StartButton;
         private TrackBar delayTrackBar;
+        private Label label1;
     }
 }
