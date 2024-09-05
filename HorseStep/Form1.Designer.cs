@@ -45,7 +45,6 @@
             sizeN.Size = new Size(194, 31);
             sizeN.TabIndex = 0;
             sizeN.Text = "Введите N";
-            sizeN.TextChanged += textBox1_TextChanged;
             // 
             // sizeM
             // 
@@ -54,7 +53,6 @@
             sizeM.Size = new Size(194, 31);
             sizeM.TabIndex = 1;
             sizeM.Text = "Введите M";
-            sizeM.TextChanged += textBox2_TextChanged;
             // 
             // StartPointX
             // 
@@ -63,7 +61,6 @@
             StartPointX.Size = new Size(194, 31);
             StartPointX.TabIndex = 2;
             StartPointX.Text = "Координата X";
-            StartPointX.TextChanged += textBox3_TextChanged;
             // 
             // StartPointY
             // 
@@ -72,7 +69,6 @@
             StartPointY.Size = new Size(194, 31);
             StartPointY.TabIndex = 3;
             StartPointY.Text = "Координата Y";
-            StartPointY.TextChanged += textBox4_TextChanged;
             // 
             // panel
             // 
@@ -80,7 +76,6 @@
             panel.Name = "panel";
             panel.Size = new Size(600, 600);
             panel.TabIndex = 5;
-            panel.Paint += panel2_Paint;
             // 
             // StartButton
             // 
@@ -114,7 +109,6 @@
             Controls.Add(sizeN);
             Name = "Form1";
             Text = "Form1";
-            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)delayTrackBar).EndInit();
             ResumeLayout(false);
             PerformLayout();
