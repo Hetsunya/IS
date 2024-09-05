@@ -24,8 +24,20 @@ namespace HorseStep
             delayTrackBar.Scroll += new EventHandler(delayTrackBar_Scroll);
         }
 
+        private void ClearResources()
+        {
+            // Удаляем все элементы из панели
+            panel.Controls.Clear();
+
+            // Обнуляем массивы
+            textBoxes = null;
+            visited = null;
+        }
+
         private async void button1_Click(object sender, EventArgs e)
         {
+            ClearResources(); // Освобождаем старые ресурсы
+
             string nText = sizeN.Text;
             string mText = sizeM.Text;
 
