@@ -33,24 +33,33 @@ namespace HorseStep
             {
                 panel.Controls.Clear();
 
-                // Создание доски и инициализация массивов
+                // Создаем TableLayoutPanel
                 TableLayoutPanel tableLayoutPanel = new TableLayoutPanel();
                 tableLayoutPanel.RowCount = m;
                 tableLayoutPanel.ColumnCount = n;
-                tableLayoutPanel.Dock = DockStyle.Fill;
 
+                // Определяем, что будет ограничивать размер ячеек (ширина или высота)
+                int cellSize = Math.Min(panel.Width / n, panel.Height / m); // Определяем размер ячейки как минимум от ширины или высоты
+
+                // Задаем размеры панели на основе клеток
+                tableLayoutPanel.Width = cellSize * n;
+                tableLayoutPanel.Height = cellSize * m;
+                tableLayoutPanel.Dock = DockStyle.None; // Отключаем автоматическое изменение размера
+
+                // Устанавливаем процентное распределение для строк и столбцов
                 for (int i = 0; i < m; i++)
                 {
-                    tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / m));
+                    tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, cellSize));
                 }
                 for (int j = 0; j < n; j++)
                 {
-                    tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f / n));
+                    tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, cellSize));
                 }
 
                 textBoxes = new TextBox[m, n];
                 visited = new bool[m, n];
 
+                // Добавляем TextBox в каждую клетку
                 for (int i = 0; i < m; i++)
                 {
                     for (int j = 0; j < n; j++)
@@ -74,7 +83,10 @@ namespace HorseStep
                     }
                 }
 
+                // Добавляем TableLayoutPanel на панель
                 panel.Controls.Add(tableLayoutPanel);
+                tableLayoutPanel.Left = (panel.Width - tableLayoutPanel.Width) / 2;  // Центрируем по горизонтали
+                tableLayoutPanel.Top = (panel.Height - tableLayoutPanel.Height) / 2; // Центрируем по вертикали
 
                 // Получаем стартовые координаты
                 startX = int.TryParse(StartPointX.Text, out int parsedX) ? parsedX : 0;
@@ -104,6 +116,7 @@ namespace HorseStep
                 MessageBox.Show("Пожалуйста, введите корректные значения для N и M.");
             }
         }
+
 
         private Task UpdateUI(int x, int y)
         {
