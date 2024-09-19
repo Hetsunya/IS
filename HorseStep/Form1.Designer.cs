@@ -36,7 +36,6 @@
             StartButton = new Button();
             delayTrackBar = new TrackBar();
             label1 = new Label();
-            timeLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)delayTrackBar).BeginInit();
             SuspendLayout();
             // 
@@ -103,7 +102,6 @@
             delayTrackBar.Name = "delayTrackBar";
             delayTrackBar.Size = new Size(200, 69);
             delayTrackBar.TabIndex = 7;
-            delayTrackBar.Scroll += delayTrackBar_Scroll;
             // 
             // label1
             // 
@@ -115,23 +113,12 @@
             label1.TabIndex = 8;
             label1.Text = "Время задержки, мс";
             // 
-            // timeLabel
-            // 
-            timeLabel.Anchor = AnchorStyles.Bottom;
-            timeLabel.AutoSize = true;
-            timeLabel.Location = new Point(1058, 684);
-            timeLabel.Name = "timeLabel";
-            timeLabel.Size = new Size(210, 25);
-            timeLabel.TabIndex = 9;
-            timeLabel.Text = "Прошло времени: ... сек";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1313, 721);
-            Controls.Add(timeLabel);
             Controls.Add(label1);
             Controls.Add(delayTrackBar);
             Controls.Add(StartButton);
@@ -157,6 +144,5 @@
         private Button StartButton;
         private TrackBar delayTrackBar;
         private Label label1;
-        private Label timeLabel;
     }
 }
