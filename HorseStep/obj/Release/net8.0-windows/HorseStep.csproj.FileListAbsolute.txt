@@ -1,0 +1,16 @@
+C:\Users\Hetsu\source\repos\HorseStep\bin\Release\net8.0-windows\HorseStep.exe
+C:\Users\Hetsu\source\repos\HorseStep\bin\Release\net8.0-windows\HorseStep.deps.json
+C:\Users\Hetsu\source\repos\HorseStep\bin\Release\net8.0-windows\HorseStep.runtimeconfig.json
+C:\Users\Hetsu\source\repos\HorseStep\bin\Release\net8.0-windows\HorseStep.dll
+C:\Users\Hetsu\source\repos\HorseStep\bin\Release\net8.0-windows\HorseStep.pdb
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.Form1.resources
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.csproj.GenerateResource.cache
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.AssemblyInfoInputs.cache
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.AssemblyInfo.cs
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.csproj.CoreCompileInputs.cache
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.dll
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\refint\HorseStep.dll
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.pdb
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\HorseStep.genruntimeconfig.cache
+C:\Users\Hetsu\source\repos\HorseStep\obj\Release\net8.0-windows\ref\HorseStep.dll
