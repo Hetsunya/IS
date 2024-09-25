@@ -244,17 +244,24 @@ namespace Maze
         {
             if (sender is Rectangle rect)
             {
-                // Логика изменения клетки при клике в режиме редактирования
-                if (rect.Fill == Brushes.White)
+                int x = (int)(Canvas.GetLeft(rect) / 40);
+                int y = (int)(Canvas.GetTop(rect) / 40);
+
+                if (maze[y, x] == 1) // Если это стена
                 {
-                    rect.Fill = Brushes.Black;
+                    maze[y, x] = 0; // Изменяем на проход
+                    rect.Fill = Brushes.White; // Меняем цвет на белый
                 }
-                else if (rect.Fill == Brushes.Black)
+                else if (maze[y, x] == 0) // Если это проход
                 {
-                    rect.Fill = Brushes.White;
+                    maze[y, x] = 1; // Изменяем на стену
+                    rect.Fill = Brushes.Black; // Меняем цвет на черный
                 }
+
+                Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> {maze[y, x]}");
             }
         }
+
 
         private IEnumerable<Node> GetNeighbors(Node node, int rows, int cols)
         {
