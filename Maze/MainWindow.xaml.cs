@@ -61,33 +61,17 @@ namespace Maze
         {
             int cellSize = 40;
 
-            //foreach (var child in MazeCanvas.Children.Cast<Rectangle>)
-            //{
-            //    child
-            //}
             // Проходим по всем элементам на Canvas
-            for (int i = 0; i < maze.GetLength(0); i++)
+            foreach (var child in MazeCanvas.Children.OfType<Rectangle>())
             {
-                for (int j = 0; j < maze.GetLength(1); j++)
+                //// Проверяем, не является ли цвет текущей клетки цветом входа или выхода
+                //if (child.Fill != Brushes.Blue || child.Fill != Brushes.Red || child.Fill != Brushes.Black)
+                //{
+                    
+                //}
+                if (child.Fill == Brushes.Yellow || child.Fill == Brushes.Green)
                 {
-                    // Находим прямоугольник, соответствующий клетке в лабиринте
-                    var child = MazeCanvas.Children
-                        .Cast<Rectangle>()
-                        .FirstOrDefault(r => Canvas.GetLeft(r) == j * cellSize && Canvas.GetTop(r) == i * cellSize);
-
-
-                    Debug.WriteLine($"Залупа дитя {child}");
-                    if (child != null && child.Fill == Brushes.Yellow)
-                    {
-                        Debug.WriteLine ($"Залупа дитя {child}");
-                        child.Fill = Brushes.White;
-                    }
-                    else if (child != null && child.Fill == Brushes.Green)
-                    {
-
-                        Debug.WriteLine($"Залупа дитя {child}");
-                        child.Fill = Brushes.White;
-                    }
+                    child.Fill = Brushes.White; // Сбрасываем цвет на белый
                 }
             }
         }
@@ -145,8 +129,8 @@ namespace Maze
                 var child = MazeCanvas.Children
                     .Cast<Rectangle>()
                     .FirstOrDefault(r => Canvas.GetLeft(r) == point.X * cellSize && Canvas.GetTop(r) == point.Y * cellSize);
-
-                if (child != null && color == "Yellow")
+                
+                if (child != null && color == "Yellow" && (child.Fill != Brushes.Blue && child.Fill != Brushes.Red))
                 {
                     child.Fill = Brushes.Yellow; // Подсвечиваем путь
                 }
@@ -155,58 +139,6 @@ namespace Maze
                     child.Fill = Brushes.Green; // Подсвечиваем путь
                 }
             }
-        }
-
-
-        private List<Point> FindPathAStar(Point start, Point end)
-        {
-            int rows = maze.GetLength(0);
-            int cols = maze.GetLength(1);
-            var openSet = new List<Node>();
-            var closedSet = new HashSet<Node>();
-            var startNode = new Node(start, null, 0, GetHeuristic(start, end));
-            openSet.Add(startNode);
-
-            Debug.WriteLine("Начинаем поиск пути...");
-
-            while (openSet.Count > 0)
-            {
-                var current = openSet.OrderBy(node => node.F).First();
-                Debug.WriteLine($"Текущий узел: {current.Position} (F: {current.F})");
-
-                if (current.Position == end)
-                {
-                    Debug.WriteLine("Достигнута конечная точка!");
-                    return ReconstructPath(current);
-                }
-
-                openSet.Remove(current);
-                closedSet.Add(current);
-
-                foreach (var neighbor in GetNeighbors(current, rows, cols))
-                {
-                    if (closedSet.Any(n => n.Position == neighbor.Position))
-                        continue;
-
-                    int tentativeG = current.G + 1;
-                    var existingNode = openSet.FirstOrDefault(n => n.Position == neighbor.Position);
-
-                    if (existingNode == null)
-                    {
-                        Debug.WriteLine($"Добавляем соседний узел: {neighbor.Position}");
-                        openSet.Add(new Node(neighbor.Position, current, tentativeG, GetHeuristic(neighbor.Position, end)));
-                    }
-                    else if (tentativeG < existingNode.G)
-                    {
-                        existingNode.Parent = current;
-                        existingNode.G = tentativeG;
-                        existingNode.F = tentativeG + existingNode.H;
-                    }
-                }
-            }
-
-            Debug.WriteLine("Путь не найден.");
-            return null; // Путь не найден
         }
 
         private List<Point> ReconstructPath(Node node)
@@ -370,48 +302,49 @@ namespace Maze
 
             do
             {
-                nextPath = FindNextPathAStarExcludingPrevious(start, end, allPaths);
+                nextPath = FindPathAStar(start, end, allPaths);
                 if (nextPath != null)
                 {
                     allPaths.Add(nextPath);
-                    break;
+                    HighlightPath(nextPath, "Green"); // Визуализируем новый путь
+                    return;
                 }
             } while (nextPath != null);
 
-            if (nextPath == null || nextPath.Count == 0)
-            {
-                RouteInfo.Text = "Следующий путь не найден!";
-                return;
-            }
-
-            HighlightPath(nextPath, "Green");
+            RouteInfo.Text = "Следующий путь не найден!";
         }
 
 
-        private List<Point> FindNextPathAStarExcludingPrevious(Point start, Point end, List<List<Point>> previousPaths)
+        private List<Point> FindPathAStar(Point start, Point end, List<List<Point>> previousPaths = null)
         {
             int rows = maze.GetLength(0);
             int cols = maze.GetLength(1);
-            var openSet = new List<Node>();
+            var openSet = new SortedSet<Node>(Comparer<Node>.Create((a, b) => a.F != b.F ? a.F.CompareTo(b.F) : a.Position.GetHashCode().CompareTo(b.Position.GetHashCode())));
             var closedSet = new HashSet<Node>();
             var startNode = new Node(start, null, 0, GetHeuristic(start, end));
             openSet.Add(startNode);
 
-            Debug.WriteLine("Начинаем поиск альтернативного пути...");
+            Debug.WriteLine("Начинаем поиск пути...");
 
             while (openSet.Count > 0)
             {
-                var current = openSet.OrderBy(node => node.F).First();
+                var current = openSet.Min; // Получаем узел с наименьшим F
+                Debug.WriteLine($"Текущий узел: {current.Position} (F: {current.F})");
 
                 if (current.Position == end)
                 {
                     var newPath = ReconstructPath(current);
 
-                    // Проверяем, пересекается ли новый путь с предыдущими
-                    if (ArePathsDifferent(newPath, previousPaths))
+                    // Если переданы предыдущие пути, выполняем проверку
+                    if (previousPaths != null && !ArePathsDifferent(newPath, previousPaths))
                     {
-                        return newPath;
+                        Debug.WriteLine("Путь совпадает с предыдущими путями, продолжаем поиск...");
+                        openSet.Remove(current); // Удаляем текущий узел из openSet, чтобы избежать зацикливания
+                        continue; // Пропускаем этот путь, если он совпадает
                     }
+
+                    Debug.WriteLine("Достигнута конечная точка!");
+                    return newPath; // Возвращаем новый путь
                 }
 
                 openSet.Remove(current);
@@ -420,42 +353,63 @@ namespace Maze
                 foreach (var neighbor in GetNeighbors(current, rows, cols))
                 {
                     if (closedSet.Any(n => n.Position == neighbor.Position))
-                        continue;
+                        continue; // Пропускаем уже исследованные узлы
 
                     int tentativeG = current.G + 1;
                     var existingNode = openSet.FirstOrDefault(n => n.Position == neighbor.Position);
 
                     if (existingNode == null)
                     {
+                        Debug.WriteLine($"Добавляем соседний узел: {neighbor.Position}");
                         openSet.Add(new Node(neighbor.Position, current, tentativeG, GetHeuristic(neighbor.Position, end)));
                     }
                     else if (tentativeG < existingNode.G)
                     {
+                        // Обновляем узел, если найден более короткий путь
                         existingNode.Parent = current;
                         existingNode.G = tentativeG;
                         existingNode.F = tentativeG + existingNode.H;
+
+                        // Удаляем и снова добавляем, чтобы сохранить порядок
+                        openSet.Remove(existingNode);
+                        openSet.Add(existingNode);
                     }
                 }
             }
 
+            Debug.WriteLine("Путь не найден.");
             return null; // Путь не найден
         }
+
 
         // Функция, проверяющая, отличается ли текущий путь от предыдущих
         private bool ArePathsDifferent(List<Point> newPath, List<List<Point>> previousPaths)
         {
+            // Проверяем, есть ли совпадения с предыдущими путями
             foreach (var path in previousPaths)
             {
-                // Проверяем, есть ли хотя бы одна точка, которая не совпадает
-                if (newPath.Any(p => path.Contains(p)))
+                // Сравниваем длину путей
+                if (path.Count == newPath.Count)
                 {
-                    return false; // Путь пересекается с предыдущим
+                    // Сравниваем каждую точку
+                    bool allEqual = true;
+                    for (int i = 0; i < path.Count; i++)
+                    {
+                        if (!path[i].Equals(newPath[i]))
+                        {
+                            allEqual = false; // Если хоть одна точка различается
+                            break;
+                        }
+                    }
+                    // Если все точки совпадают, пути одинаковые
+                    if (allEqual)
+                    {
+                        return false; // Путь совпадает
+                    }
                 }
             }
-            return true; // Все пути различны
+            return true; // Путь отличается
         }
-
-
 
 
         private bool IsPathDifferent(List<Point> newPath, List<List<Point>> previousPaths)
