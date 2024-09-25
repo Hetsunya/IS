@@ -37,3 +37,6 @@ C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\refint\Maze.dll
 C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\Maze.pdb
 C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\Maze.genruntimeconfig.cache
 C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\ref\Maze.dll
+C:\Users\Hetsu\Desktop\IS\Maze\bin\Debug\net6.0-windows\Newtonsoft.Json.dll
+C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\Maze.csproj.AssemblyReference.cache
+C:\Users\Hetsu\Desktop\IS\Maze\obj\Debug\net6.0-windows\Maze.csproj.Up2Date

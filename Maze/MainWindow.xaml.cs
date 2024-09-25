@@ -29,13 +29,48 @@ namespace Maze
                 { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 1, 1, 0, 1, 0, 1, 1, 1, 0 },
                 { 0, 0, 0, 0, 1, 1, 1, 0, 1, 0 },
-                { 1, 1, 1, 1, 0, 0, 1, 1, 0, 0 }
+                { 1, 1, 1, 1, 0, 0, 1, 1, 3, 0 }
             };
 
             int cellSize = 40;
             maze = new MazeSolver(mazeArray, cellSize);
             mazeController = new MazeController(maze);
             maze.Draw(MazeCanvas);
+        }
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json"
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                MazeFileHandler fileHandler = new MazeFileHandler();
+                int[,] loadedMaze = fileHandler.LoadMaze(fileDialog.FileName);
+
+                if (loadedMaze != null)
+                {
+                    maze.SetCells(loadedMaze);
+                    maze.Draw(MazeCanvas);
+                }
+            }
+        }
+
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json"
+            };
+
+            if (fileDialog.ShowDialog() == true)
+            {
+                MazeFileHandler fileHandler = new MazeFileHandler();
+                fileHandler.SaveMaze(maze.Cells, fileDialog.FileName);
+            }
         }
 
         private void FindAllPaths_Click(object sender, RoutedEventArgs e)

@@ -46,6 +46,15 @@ namespace Maze
             }
         }
 
+        public int[,] GetCells()
+        {
+            return Cells;
+        }
+        public void SetCells(int[,] cells)
+        {
+            Cells = cells;
+        }
+
         public Brush ToggleCell(int x, int y)
         {
             // Меняем состояние ячейки
@@ -68,7 +77,41 @@ namespace Maze
             return new Point(-1, -1);
         }
 
-        public void ClearHighlights(Canvas canvas)
+        public List<Point> FindExits()
+        {
+            List<Point> exits = new List<Point>();
+            int rows = Cells.GetLength(0);
+            int cols = Cells.GetLength(1);
+
+            // Проверяем верхнюю и нижнюю границы
+            for (int x = 0; x < cols; x++)
+            {
+                if (Cells[0, x] == 0) // Верхняя граница
+                {
+                    exits.Add(new Point(x, 0));
+                }
+                if (Cells[rows - 1, x] == 0) // Нижняя граница
+                {
+                    exits.Add(new Point(x, rows - 1));
+                }
+            }
+
+            // Проверяем левую и правую границы
+            for (int y = 1; y < rows - 1; y++)
+            {
+                if (Cells[y, 0] == 0) // Левая граница
+                {
+                    exits.Add(new Point(0, y));
+                }
+                if (Cells[y, cols - 1] == 0) // Правая граница
+                {
+                    exits.Add(new Point(cols - 1, y));
+                }
+            }
+
+            return exits;
+        }
+    public void ClearHighlights(Canvas canvas)
         {
             foreach (var child in canvas.Children.OfType<Rectangle>())
             {

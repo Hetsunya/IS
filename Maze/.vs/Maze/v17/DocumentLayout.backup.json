@@ -7,16 +7,8 @@
       "RelativeMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|c:\\users\\hetsu\\desktop\\is\\maze\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|c:\\users\\hetsu\\desktop\\is\\maze\\mazesolver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|solutionrelative:mazesolver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|c:\\users\\hetsu\\desktop\\is\\maze\\mazecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{857BAA66-8D65-4CCA-BCC4-CB2FBEBAA674}|Maze.csproj|solutionrelative:mazecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,44 +18,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2024-09-25T14:56:56.087Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "MazeSolver.cs",
               "DocumentMoniker": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MazeSolver.cs",
               "RelativeDocumentMoniker": "MazeSolver.cs",
               "ToolTip": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MazeSolver.cs",
               "RelativeToolTip": "MazeSolver.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAAAowDgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAgwDQAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T14:21:44.67Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MazeController.cs",
-              "DocumentMoniker": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MazeController.cs",
-              "RelativeDocumentMoniker": "MazeController.cs",
-              "ToolTip": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MazeController.cs",
-              "RelativeToolTip": "MazeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T14:21:18.008Z",
+              "WhenOpened": "2024-09-25T15:16:37.561Z",
               "EditorCaption": ""
             },
             {
@@ -74,9 +41,9 @@
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Hetsu\\Desktop\\IS\\Maze\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAAwHIAAABHAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwB8AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-25T12:12:54.292Z",
+              "WhenOpened": "2024-09-25T15:12:15.198Z",
               "EditorCaption": ""
             }
           ]

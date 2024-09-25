@@ -24,7 +24,9 @@
             <Button Content="Найти кратчайший путь" Click="FindShortestPath_Click" Name="ShortestRouteButton" Margin="5"/>
             <Button Content="Показать следующий маршрут" Click="ShowNextRoute_Click" Name="NextRouteButton" Margin="5"/>
             <Button Content="Изменить конфигурацию лабиринта" Name="EditButton" Click="EditMaze_Click" Margin="5"/>
-            <Button Content="Готово" Click="DoneButton_Click" Margin="5" Visibility="Collapsed" Name="DoneButton"/> <!-- Изначально скрыта -->
+            <Button Name="ImportButton" Content="Импортировать" Click="ImportButton_Click" Margin="5"/>
+            <Button Name="ExportButton" Content="Экспортировать" Click="ExportButton_Click" Margin="5"/>
+
         </StackPanel>
 
         
