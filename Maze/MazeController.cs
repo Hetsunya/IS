@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
@@ -14,10 +15,14 @@ namespace Maze
             this.maze = maze;
         }
 
-        public List<List<Point>> FindAllPaths(Point start, Point end)
+        public List<List<Point>> FindAllPaths(Point start, List<Point> ends)
         {
             List<List<Point>> allPaths = new List<List<Point>>();
-            FindAllPaths(start, end, new List<Point>(), allPaths);
+            foreach (var end in ends)
+            {
+                Debug.WriteLine($"Exit at: ({end.X}, {end.Y})");
+                FindAllPaths(start, end, new List<Point>(), allPaths);
+            }
             return allPaths;
         }
 

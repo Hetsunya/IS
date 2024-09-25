@@ -28,8 +28,8 @@ namespace Maze
                 { 0, 1, 1, 0, 1, 1, 1, 1, 0, 1 },
                 { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 1, 1, 0, 1, 0, 1, 1, 1, 0 },
-                { 0, 0, 0, 0, 1, 1, 1, 0, 1, 0 },
-                { 1, 1, 1, 1, 0, 0, 1, 1, 3, 0 }
+                { 0, 0, 0, 0, 0, 1, 1, 0, 1, 0 },
+                { 1, 1, 1, 1, 3, 0, 1, 1, 3, 0 }
             };
 
             int cellSize = 40;
@@ -77,19 +77,20 @@ namespace Maze
         {
             maze.ClearHighlights(MazeCanvas);
             Point start = maze.FindPoint(2);
-            Point end = maze.FindPoint(3);
+            List<Point> ends = maze.FindExits();
 
-            if (start == new Point(-1, -1) || end == new Point(-1, -1))
+            if (start == new Point(-1, -1) || ends == null || ends.Count == 0)
             {
                 RouteInfo.Text = "Старт или конец не найдены!";
                 return;
             }
 
             allPaths.Clear();
-            allPaths = mazeController.FindAllPaths(start, end);
+            allPaths = mazeController.FindAllPaths(start, ends);
 
             RouteInfo.Text = allPaths.Count == 0 ? "Пути не найдены!" : $"Найдено путей: {allPaths.Count}";
         }
+
 
         private void HighlightPath(List<Point> path, string color)
         {

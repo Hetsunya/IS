@@ -86,11 +86,11 @@ namespace Maze
             // Проверяем верхнюю и нижнюю границы
             for (int x = 0; x < cols; x++)
             {
-                if (Cells[0, x] == 0) // Верхняя граница
+                if (Cells[0, x] == 3) // Верхняя граница
                 {
                     exits.Add(new Point(x, 0));
                 }
-                if (Cells[rows - 1, x] == 0) // Нижняя граница
+                if (Cells[rows - 1, x] == 3) // Нижняя граница
                 {
                     exits.Add(new Point(x, rows - 1));
                 }
@@ -99,11 +99,11 @@ namespace Maze
             // Проверяем левую и правую границы
             for (int y = 1; y < rows - 1; y++)
             {
-                if (Cells[y, 0] == 0) // Левая граница
+                if (Cells[y, 0] == 3) // Левая граница
                 {
                     exits.Add(new Point(0, y));
                 }
-                if (Cells[y, cols - 1] == 0) // Правая граница
+                if (Cells[y, cols - 1] == 3) // Правая граница
                 {
                     exits.Add(new Point(cols - 1, y));
                 }
