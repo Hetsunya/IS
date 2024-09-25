@@ -23,7 +23,7 @@
             <Button Content="Найти все пути" Click="FindAllPaths_Click" Name="AllPathsButton" Margin="5"/>
             <Button Content="Найти кратчайший путь" Click="FindShortestPath_Click" Name="ShortestRouteButton" Margin="5"/>
             <Button Content="Показать следующий маршрут" Click="ShowNextRoute_Click" Name="NextRouteButton" Margin="5"/>
-            <Button Content="Изменить конфигурацию лабиринта" Click="EditMaze_Click" Margin="5"/>
+            <Button Content="Изменить конфигурацию лабиринта" Name="EditButton" Click="EditMaze_Click" Margin="5"/>
             <Button Content="Готово" Click="DoneButton_Click" Margin="5" Visibility="Collapsed" Name="DoneButton"/> <!-- Изначально скрыта -->
         </StackPanel>
 
