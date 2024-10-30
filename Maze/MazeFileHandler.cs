@@ -1,38 +1,59 @@
-﻿using System;
-using System.IO;
-using Newtonsoft.Json;
+﻿using System.IO;
+using System.Windows;
 
-namespace Maze
+public class MazeFileHandler
 {
-    public class MazeFileHandler
+    public int[,] LoadMazeFromTxt(string filePath)
     {
-        public int[,] LoadMaze(string filePath)
+        try
         {
-            try
+            var lines = File.ReadAllLines(filePath);
+            int rows = lines.Length;
+            int cols = lines[0].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries).Length;
+
+            int[,] maze = new int[rows, cols];
+
+            for (int i = 0; i < rows; i++)
             {
-                string json = File.ReadAllText(filePath);
-                return JsonConvert.DeserializeObject<int[,]>(json);
+                var cells = lines[i].Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int j = 0; j < cols; j++)
+                {
+                    maze[i, j] = int.Parse(cells[j]);
+                }
             }
-            catch (Exception ex)
+
+            return maze;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при загрузке лабиринта: {ex.Message}");
+            return null;
+        }
+    }
+
+    public void SaveMazeToTxt(int[,] maze, string filePath)
+    {
+        try
+        {
+            using (var writer = new StreamWriter(filePath))
             {
-                // Обработка ошибок
-                Console.WriteLine($"Ошибка при загрузке лабиринта: {ex.Message}");
-                return null;
+                for (int i = 0; i < maze.GetLength(0); i++)
+                {
+                    for (int j = 0; j < maze.GetLength(1); j++)
+                    {
+                        writer.Write(maze[i, j]);
+                        if (j < maze.GetLength(1) - 1)
+                        {
+                            writer.Write(" ");
+                        }
+                    }
+                    writer.WriteLine();
+                }
             }
         }
-
-        public void SaveMaze(int[,] maze, string filePath)
+        catch (Exception ex)
         {
-            try
-            {
-                string json = JsonConvert.SerializeObject(maze);
-                File.WriteAllText(filePath, json);
-            }
-            catch (Exception ex)
-            {
-                // Обработка ошибок
-                Console.WriteLine($"Ошибка при сохранении лабиринта: {ex.Message}");
-            }
+            MessageBox.Show($"Ошибка при сохранении лабиринта: {ex.Message}");
         }
     }
 }

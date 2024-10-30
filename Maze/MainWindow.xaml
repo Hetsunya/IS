@@ -11,7 +11,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
+
         <!-- Лабиринт -->
         <Canvas Name="MazeCanvas" Grid.Row="0" Grid.Column="0" Background="White"/>
 
@@ -26,12 +26,13 @@
             <Button Content="Изменить конфигурацию лабиринта" Name="EditButton" Click="EditMaze_Click" Margin="5"/>
             <Button Name="ImportButton" Content="Импортировать" Click="ImportButton_Click" Margin="5"/>
             <Button Name="ExportButton" Content="Экспортировать" Click="ExportButton_Click" Margin="5"/>
-
         </StackPanel>
+        <ListBox x:Name="PathsListBox" SelectionChanged="PathsListBox_SelectionChanged" Margin="0,217,0,3" Grid.RowSpan="2" HorizontalAlignment="Center" Width="215" Grid.Column="1" />
 
-        
+
+
         <!-- Информация о маршруте -->
         <TextBlock Name="RouteInfo" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+                   HorizontalAlignment="Left" VerticalAlignment="Stretch" FontSize="16" Margin="100,0,0,0"/>
     </Grid>
 </Window>

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -42,13 +41,13 @@ namespace Maze
         {
             var fileDialog = new Microsoft.Win32.OpenFileDialog
             {
-                Filter = "JSON files (*.json)|*.json"
+                Filter = "Text files (*.txt)|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)
             {
                 MazeFileHandler fileHandler = new MazeFileHandler();
-                int[,] loadedMaze = fileHandler.LoadMaze(fileDialog.FileName);
+                int[,] loadedMaze = fileHandler.LoadMazeFromTxt(fileDialog.FileName);
 
                 if (loadedMaze != null)
                 {
@@ -58,18 +57,17 @@ namespace Maze
             }
         }
 
-
         private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
             var fileDialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "JSON files (*.json)|*.json"
+                Filter = "Text files (*.txt)|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)
             {
                 MazeFileHandler fileHandler = new MazeFileHandler();
-                fileHandler.SaveMaze(maze.Cells, fileDialog.FileName);
+                fileHandler.SaveMazeToTxt(maze.Cells, fileDialog.FileName);
             }
         }
 
@@ -88,8 +86,38 @@ namespace Maze
             allPaths.Clear();
             allPaths = mazeController.FindAllPaths(start, ends);
 
+            // Очищаем ListBox и добавляем найденные пути в формате [номер] ([длина])
+            PathsListBox.Items.Clear();
+            for (int i = 0; i < allPaths.Count; i++)
+            {
+                var path = allPaths[i];
+                int length = path.Count; // Длина пути
+                PathsListBox.Items.Add($"[{i + 1}] ({length})");
+            }
+
             RouteInfo.Text = allPaths.Count == 0 ? "Пути не найдены!" : $"Найдено путей: {allPaths.Count}";
         }
+
+        // Обработчик выбора пути из списка
+        private void PathsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PathsListBox.SelectedItem != null)
+            {
+                // Очищаем выделения перед подсветкой нового пути
+                maze.ClearHighlights(MazeCanvas);
+
+                // Получаем индекс выбранного пути
+                int selectedIndex = PathsListBox.SelectedIndex;
+
+                // Подсвечиваем выбранный путь
+                if (selectedIndex >= 0 && selectedIndex < allPaths.Count)
+                {
+                    var selectedPath = allPaths[selectedIndex];
+                    HighlightPath(selectedPath, "Yellow");
+                }
+            }
+        }
+
 
 
         private void HighlightPath(List<Point> path, string color)
@@ -139,15 +167,14 @@ namespace Maze
         {
             isEditing = !isEditing;
 
-            
             RouteInfo.Text = isEditing ? "Редактирование включено" : "Редактирование завершено";
             if (isEditing)
             {
                 EditButton.Content = "Готово";
                 AddClickHandlers();
             }
-            else 
-            { 
+            else
+            {
                 EditButton.Content = "Изменить конфигурацию лабиринта";
                 RemoveClickHandlers();
             }
@@ -178,7 +205,10 @@ namespace Maze
             AllPathsButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
             ShortestRouteButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
             NextRouteButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
+            ImportButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
+            ExportButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
         }
+
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             maze.ClearHighlights(MazeCanvas);
@@ -187,25 +217,18 @@ namespace Maze
             RemoveClickHandlers();
         }
 
-
-
         private void Cell_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (sender is Rectangle rect)
             {
-                // Получаем координаты ячейки
                 int x = (int)(Canvas.GetLeft(rect) / maze.CellSize);
                 int y = (int)(Canvas.GetTop(rect) / maze.CellSize);
 
-                // Вызываем метод ToggleCell из MazeSolver
                 Brush newColor = maze.ToggleCell(x, y);
-
-                // Устанавливаем новый цвет для прямоугольника
                 rect.Fill = newColor;
 
                 Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> ({y}, {x})");
             }
         }
-
     }
 }
