@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hetsu\\source\\repos\\HorseStep\\HorseStep.csproj": {}
+    "C:\\Users\\Hetsu\\Desktop\\IS\\HorseStep\\HorseStep.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hetsu\\source\\repos\\HorseStep\\HorseStep.csproj": {
+    "C:\\Users\\Hetsu\\Desktop\\IS\\HorseStep\\HorseStep.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hetsu\\source\\repos\\HorseStep\\HorseStep.csproj",
+        "projectUniqueName": "C:\\Users\\Hetsu\\Desktop\\IS\\HorseStep\\HorseStep.csproj",
         "projectName": "HorseStep",
-        "projectPath": "C:\\Users\\Hetsu\\source\\repos\\HorseStep\\HorseStep.csproj",
+        "projectPath": "C:\\Users\\Hetsu\\Desktop\\IS\\HorseStep\\HorseStep.csproj",
         "packagesPath": "C:\\Users\\Hetsu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hetsu\\source\\repos\\HorseStep\\obj\\",
+        "outputPath": "C:\\Users\\Hetsu\\Desktop\\IS\\HorseStep\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

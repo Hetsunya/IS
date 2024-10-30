@@ -2,18 +2,17 @@ namespace HorseStep
 {
     public partial class Form1 : Form
     {
-        private readonly int[] dx = { 2, 2, 1, 1, -1, -1, -2, -2 }; // Возможные смещения по x
-        private readonly int[] dy = { 1, -1, 2, -2, 2, -2, 1, -1 }; // Возможные смещения по y
-        private TextBox[,] textBoxes; // Массив для хранения ссылок на текстовые поля
-        private bool[,] visited; // Массив для хранения информации, посещалась ли клетка
-        private int currentStep = 0;  // Номер текущего хода
-        private int startX, startY;    // Начальные координаты коня
-        private int delay = 200;  // Задержка между ходами (по умолчанию)
+        private readonly int[] dx = { 2, 2, 1, 1, -1, -1, -2, -2 };
+        private readonly int[] dy = { 1, -1, 2, -2, 2, -2, 1, -1 };
+        private TextBox[,] textBoxes;
+        private bool[,] visited;
+        private int currentStep = 0;
+        private int startX, startY;
+        private int delay = 0;
 
         public Form1()
         {
             InitializeComponent();
-
             delayTrackBar.Minimum = 0;
             delayTrackBar.Maximum = 1000;
             delayTrackBar.Value = delay;
@@ -31,27 +30,29 @@ namespace HorseStep
                 return;
             }
 
-            InitializeBoard(n, m);
-
-            if (!int.TryParse(StartPointX.Text, out startX) || !int.TryParse(StartPointY.Text, out startY))
+            if (!int.TryParse(StartPointX.Text, out startX) || !int.TryParse(StartPointY.Text, out startY) ||
+                !IsValid(startX, startY, n, m))
             {
-                startX = startY = 0;
+                MessageBox.Show("Стартовая точка вне допустимых пределов доски.");
+                return;
             }
 
+            InitializeBoard(n, m);
             currentStep = 0;
+
             List<Point> path = await Task.Run(() => FindKnightTour(n, m, new Point(startX, startY)));
 
             if (path.Count > 0)
             {
+                MessageBox.Show($"Решение найдено. Количество шагов: {path.Count}");
                 foreach (var move in path)
                 {
                     await UpdateUI(move.X, move.Y);
-                    await Task.Delay(delay);
                 }
             }
             else
             {
-                MessageBox.Show("Нет решения для текущего стартового положения.");
+                MessageBox.Show("Решение не найдено!");
             }
         }
 
@@ -92,20 +93,15 @@ namespace HorseStep
             panel.Controls.Add(tableLayoutPanel);
         }
 
-        private Task UpdateUI(int x, int y)
+        private async Task UpdateUI(int x, int y)
         {
-            return Task.Run(() =>
+            if (IsValidPosition(x, y))
             {
-                if (IsValidPosition(x, y))
-                {
-                    Invoke(new Action(() =>
-                    {
-                        textBoxes[y, x].Text = currentStep.ToString();
-                        visited[y, x] = true;
-                        currentStep++;
-                    }));
-                }
-            });
+                textBoxes[y, x].Text = currentStep.ToString();
+                visited[y, x] = true;
+                currentStep++;
+                await Task.Delay(delay);
+            }
         }
 
         private List<Point> FindKnightTour(int boardWidth, int boardHeight, Point start)
@@ -114,29 +110,30 @@ namespace HorseStep
             var visited = new bool[boardWidth, boardHeight];
             visited[start.X, start.Y] = true;
 
-            while (path.Count < boardWidth * boardHeight)
-            {
-                var nextMove = GetNextMove(path.Last(), visited, boardWidth, boardHeight);
-                if (nextMove == null)
-                    return new List<Point>(); // Нет решения
-
-                path.Add(nextMove.Value);
-                visited[nextMove.Value.X, nextMove.Value.Y] = true;
-            }
-
-            return path;
+            return Solve(boardWidth, boardHeight, start, path, visited) ? path : new List<Point>();
         }
 
-        private Point? GetNextMove(Point currentPos, bool[,] visited, int boardWidth, int boardHeight)
+        private bool Solve(int boardWidth, int boardHeight, Point currentPos, List<Point> path, bool[,] visited)
         {
-            var moves = GetPotentialMoves(currentPos);
-            var nextMoves = moves
+            if (path.Count == boardWidth * boardHeight) return true;
+
+            var nextMoves = GetPotentialMoves(currentPos)
                 .Where(move => IsValid(move.X, move.Y, boardWidth, boardHeight) && !visited[move.X, move.Y])
-                .Select(move => (move, degree: GetMoveDegree(move.X, move.Y, visited, boardWidth, boardHeight)))
-                .OrderBy(x => x.degree)
+                .OrderBy(move => GetMoveDegree(move.X, move.Y, visited, boardWidth, boardHeight))
                 .ToList();
 
-            return nextMoves.FirstOrDefault().move;
+            foreach (var move in nextMoves)
+            {
+                visited[move.X, move.Y] = true;
+                path.Add(move);
+
+                if (Solve(boardWidth, boardHeight, move, path, visited)) return true;
+
+                visited[move.X, move.Y] = false;
+                path.RemoveAt(path.Count - 1);
+            }
+
+            return false;
         }
 
         private int GetMoveDegree(int x, int y, bool[,] visited, int boardWidth, int boardHeight)
