@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -74,17 +75,17 @@ namespace Maze
         private void FindAllPaths_Click(object sender, RoutedEventArgs e)
         {
             maze.ClearHighlights(MazeCanvas);
-            Point start = maze.FindPoint(2);
-            List<Point> ends = maze.FindExits();
+            List<Point> starts = maze.FindAllStarts();
+            List<Point> ends = maze.FindAllExits();
 
-            if (start == new Point(-1, -1) || ends == null || ends.Count == 0)
+            if (starts.Any(start => start == new Point(-1, -1)) || ends == null || ends.Count == 0)
             {
                 RouteInfo.Text = "Старт или конец не найдены!";
                 return;
             }
 
             allPaths.Clear();
-            allPaths = mazeController.FindAllPaths(start, ends);
+            allPaths = mazeController.FindAllPaths(starts, ends);
 
             // Очищаем ListBox и добавляем найденные пути в формате [номер] ([длина])
             PathsListBox.Items.Clear();
@@ -92,11 +93,12 @@ namespace Maze
             {
                 var path = allPaths[i];
                 int length = path.Count; // Длина пути
-                PathsListBox.Items.Add($"[{i + 1}] ({length})");
+                PathsListBox.Items.Add($"Маршрут [{i + 1}] ({length})");
             }
 
             RouteInfo.Text = allPaths.Count == 0 ? "Пути не найдены!" : $"Найдено путей: {allPaths.Count}";
         }
+
 
         // Обработчик выбора пути из списка
         private void PathsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -117,8 +119,6 @@ namespace Maze
                 }
             }
         }
-
-
 
         private void HighlightPath(List<Point> path, string color)
         {
@@ -160,7 +160,7 @@ namespace Maze
             maze.ClearHighlights(MazeCanvas);
             currentPathIndex = (currentPathIndex + 1) % allPaths.Count;
             HighlightPath(allPaths[currentPathIndex], "Yellow");
-            RouteInfo.Text = $"Путь {currentPathIndex + 1} из {allPaths.Count}";
+            RouteInfo.Text = $"Маршрут {currentPathIndex + 1} из {allPaths.Count}";
         }
 
         private void EditMaze_Click(object sender, RoutedEventArgs e)
@@ -207,6 +207,7 @@ namespace Maze
             NextRouteButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
             ImportButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
             ExportButton.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
+            PathsListBox.Visibility = isEditing ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
@@ -224,11 +225,40 @@ namespace Maze
                 int x = (int)(Canvas.GetLeft(rect) / maze.CellSize);
                 int y = (int)(Canvas.GetTop(rect) / maze.CellSize);
 
-                Brush newColor = maze.ToggleCell(x, y);
-                rect.Fill = newColor;
+                // Получаем выбранный тип клетки из ComboBox
+                int selectedType = int.Parse(((ComboBoxItem)CellTypeComboBox.SelectedItem)?.Tag.ToString() ?? "0");
 
-                Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> ({y}, {x})");
+                // Получаем текущий тип клетки
+                int currentType = maze.Cells[x, y];
+
+                // Если текущий тип соответствует выбранному, устанавливаем пустую клетку (0)
+                if (currentType == selectedType)
+                {
+                    maze.Cells[x, y] = 0; // Устанавливаем пустую клетку
+                    rect.Fill = Brushes.White; // Меняем цвет на белый
+                }
+                else
+                {
+                    // Обновляем клетку на выбранный тип
+                    maze.Cells[y, x] = selectedType; // Обновляем массив клеток
+
+                    // Меняем цвет в зависимости от типа
+                    rect.Fill = selectedType switch
+                    {
+                        0 => Brushes.White, // Пустая клетка
+                        1 => Brushes.Black, // Стена
+                        2 => Brushes.Blue, // Вход
+                        3 => Brushes.Red, // Выход
+                        _ => Brushes.Transparent // Цвет по умолчанию
+                    };
+                }
+
+                Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> Тип: {maze.Cells[x, y]}");
             }
         }
+
     }
+
+
 }
+

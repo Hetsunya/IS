@@ -36,7 +36,8 @@ namespace Maze
                             0 => Brushes.White,
                             1 => Brushes.Black,
                             2 => Brushes.Blue,
-                            _ => Brushes.Red
+                            3 => Brushes.Red,
+                            _ => Brushes.Transparent
                         }
                     };
                     Canvas.SetLeft(rect, j * CellSize);
@@ -77,40 +78,38 @@ namespace Maze
             return new Point(-1, -1);
         }
 
-        public List<Point> FindExits()
+    public List<Point> FindAllStarts()
+    {
+        List<Point> starts = new List<Point>();
+        for (int i = 0; i < Cells.GetLength(0); i++)
         {
-            List<Point> exits = new List<Point>();
-            int rows = Cells.GetLength(0);
-            int cols = Cells.GetLength(1);
-
-            // Проверяем верхнюю и нижнюю границы
-            for (int x = 0; x < cols; x++)
+            for (int j = 0; j < Cells.GetLength(1); j++)
             {
-                if (Cells[0, x] == 3) // Верхняя граница
+                if (Cells[i, j] == 2) // Предположим, что 2 обозначает стартовые точки
                 {
-                    exits.Add(new Point(x, 0));
-                }
-                if (Cells[rows - 1, x] == 3) // Нижняя граница
-                {
-                    exits.Add(new Point(x, rows - 1));
+                    starts.Add(new Point(j, i)); // j - по оси X, i - по оси Y
                 }
             }
-
-            // Проверяем левую и правую границы
-            for (int y = 1; y < rows - 1; y++)
-            {
-                if (Cells[y, 0] == 3) // Левая граница
-                {
-                    exits.Add(new Point(0, y));
-                }
-                if (Cells[y, cols - 1] == 3) // Правая граница
-                {
-                    exits.Add(new Point(cols - 1, y));
-                }
-            }
-
-            return exits;
         }
+        return starts;
+    }
+
+    public List<Point> FindAllExits()
+    {
+        List<Point> exits = new List<Point>();
+        for (int i = 0; i < Cells.GetLength(0); i++)
+        {
+            for (int j = 0; j < Cells.GetLength(1); j++)
+            {
+                if (Cells[i, j] == 3) // Предположим, что 3 обозначает выходы
+                {
+                    exits.Add(new Point(j, i)); // j - по оси X, i - по оси Y
+                }
+            }
+        }
+        return exits;
+    }
+
     public void ClearHighlights(Canvas canvas)
         {
             foreach (var child in canvas.Children.OfType<Rectangle>())

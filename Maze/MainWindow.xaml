@@ -27,7 +27,16 @@
             <Button Name="ImportButton" Content="Импортировать" Click="ImportButton_Click" Margin="5"/>
             <Button Name="ExportButton" Content="Экспортировать" Click="ExportButton_Click" Margin="5"/>
         </StackPanel>
+        <!-- Список путей -->
         <ListBox x:Name="PathsListBox" SelectionChanged="PathsListBox_SelectionChanged" Margin="0,217,0,3" Grid.RowSpan="2" HorizontalAlignment="Center" Width="215" Grid.Column="1" />
+        <!-- Выбор для эдита -->
+        <StackPanel Orientation="Vertical" Margin="10,324,5,5">
+            <ComboBox Name="CellTypeComboBox" Width="200" Margin="5">
+                <ComboBoxItem Content="Стена" Tag="1"/>
+                <ComboBoxItem Content="Вход" Tag="2"/>
+                <ComboBoxItem Content="Выход" Tag="3"/>
+            </ComboBox>
+        </StackPanel>
 
 
 

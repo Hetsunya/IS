@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
 
 namespace Maze
 {
@@ -15,13 +13,18 @@ namespace Maze
             this.maze = maze;
         }
 
-        public List<List<Point>> FindAllPaths(Point start, List<Point> ends)
+        public List<List<Point>> FindAllPaths(List<Point> starts, List<Point> ends)
         {
             List<List<Point>> allPaths = new List<List<Point>>();
-            foreach (var end in ends)
+
+            foreach (var start in starts)
             {
-                Debug.WriteLine($"Exit at: ({end.X}, {end.Y})");
-                FindAllPaths(start, end, new List<Point>(), allPaths);
+                Debug.WriteLine($"Start at: ({start.X}, {start.Y})");
+                foreach (var end in ends)
+                {
+                    Debug.WriteLine($"Exit at: ({end.X}, {end.Y})");
+                    FindAllPaths(start, end, new List<Point>(), allPaths);
+                }
             }
             return allPaths;
         }
@@ -51,10 +54,7 @@ namespace Maze
         private IEnumerable<Node> GetNeighbors(Node node, int rows, int cols)
         {
             var neighbors = new List<Node>();
-            var directions = new Point[]
-            {
-                new Point(0, -1), new Point(0, 1), new Point(-1, 0), new Point(1, 0)
-            };
+            var directions = new Point[] { new Point(0, -1), new Point(0, 1), new Point(-1, 0), new Point(1, 0) };
 
             foreach (var direction in directions)
             {
