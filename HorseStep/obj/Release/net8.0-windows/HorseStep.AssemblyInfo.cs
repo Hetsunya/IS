@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HorseStep")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8dde3c053c2b65272489268a9c441888d7273470")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b74b99c005e10a5af7b585125c20f70ca94cb151")]
 [assembly: System.Reflection.AssemblyProductAttribute("HorseStep")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HorseStep")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,4 +1,4 @@
-namespace HorseStep
+﻿namespace HorseStep
 {
     public partial class Form1 : Form
     {
@@ -19,21 +19,47 @@ namespace HorseStep
             delayTrackBar.TickFrequency = 10;
             delayTrackBar.Scroll += (s, e) => delay = delayTrackBar.Value;
 
-            this.Text = "������ � ���� ����";
+            this.Text = "Задача о ходе коня";
+        }
+
+        private bool IsBoardValid(int width, int height)
+        {
+            // Обменяем значения, чтобы ширина всегда была <= высоты
+            if (width > height) (width, height) = (height, width);
+
+            // Правила для доски 3×n
+            if (width == 3 && (height < 4 || (height > 4 && height < 7)))
+                return false;
+
+            // Исключение для доски 4×4
+            if (width == 4 && height == 4)
+                return false;
+
+            // Во всех других случаях доска допустима
+            return true;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(sizeN.Text, out int n) || !int.TryParse(sizeM.Text, out int m))
             {
-                MessageBox.Show("����������, ������� ���������� �������� ��� N � M.");
+                MessageBox.Show("Пожалуйста, введите корректные значения для N и M.");
+                return;
+            }
+
+            // Проверка невозможных размеров доски
+            if (!IsBoardValid(n, m))
+            {
+                MessageBox.Show("Обход коня невозможен с текущими размерами доски. " +
+                                "Если одна сторона равна 3, другая должна быть 4 или не меньше 7. " +
+                                "На доске 4×4 решение также невозможно.");
                 return;
             }
 
             if (!int.TryParse(StartPointX.Text, out startX) || !int.TryParse(StartPointY.Text, out startY) ||
                 !IsValid(startX, startY, n, m))
             {
-                MessageBox.Show("��������� ����� ��� ���������� �������� �����.");
+                MessageBox.Show("Стартовая точка вне допустимых пределов доски.");
                 return;
             }
 
@@ -44,7 +70,7 @@ namespace HorseStep
 
             if (path.Count > 0)
             {
-                MessageBox.Show($"������� �������. ���������� �����: {path.Count}");
+                MessageBox.Show($"Решение найдено. Количество шагов: {path.Count}");
                 foreach (var move in path)
                 {
                     await UpdateUI(move.X, move.Y);
@@ -52,9 +78,11 @@ namespace HorseStep
             }
             else
             {
-                MessageBox.Show("������� �� �������!");
+                MessageBox.Show("Решение не найдено! Попробуйте выбрать другую стартовую позицию.");
             }
         }
+
+
 
         private void InitializeBoard(int n, int m)
         {
@@ -106,12 +134,20 @@ namespace HorseStep
 
         private List<Point> FindKnightTour(int boardWidth, int boardHeight, Point start)
         {
-            var path = new List<Point> { start };
             var visited = new bool[boardWidth, boardHeight];
             visited[start.X, start.Y] = true;
 
-            return Solve(boardWidth, boardHeight, start, path, visited) ? path : new List<Point>();
+            var path = new List<Point> { start };
+
+            // Если изначально невозможно пройти весь маршрут
+            if (Solve(boardWidth, boardHeight, start, path, visited))
+            {
+                return path;
+            }
+
+            return new List<Point>();
         }
+
 
         private bool Solve(int boardWidth, int boardHeight, Point currentPos, List<Point> path, bool[,] visited)
         {
