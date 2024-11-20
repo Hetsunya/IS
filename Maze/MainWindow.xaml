@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Maze.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Maze Solver" Height="450" Width="800">
+        Title="Maze Solver" Height="507" Width="909">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -28,10 +28,10 @@
             <Button Name="ExportButton" Content="Экспортировать" Click="ExportButton_Click" Margin="5"/>
         </StackPanel>
         <!-- Список путей -->
-        <ListBox x:Name="PathsListBox" SelectionChanged="PathsListBox_SelectionChanged" Margin="0,217,0,3" Grid.RowSpan="2" HorizontalAlignment="Center" Width="215" Grid.Column="1" />
+        <ListBox x:Name="PathsListBox" SelectionChanged="PathsListBox_SelectionChanged" Margin="0,217,0,0" Grid.RowSpan="2" HorizontalAlignment="Center" Width="235" Grid.Column="1" />
         <!-- Выбор для эдита -->
-        <StackPanel Orientation="Vertical" Margin="10,324,5,5">
-            <ComboBox Name="CellTypeComboBox" Width="200" Margin="5">
+        <StackPanel Orientation="Vertical" Margin="450,224,5,5">
+            <ComboBox x:Name="CellTypeComboBox" Width="119" Height="23">
                 <ComboBoxItem Content="Стена" Tag="1"/>
                 <ComboBoxItem Content="Вход" Tag="2"/>
                 <ComboBoxItem Content="Выход" Tag="3"/>

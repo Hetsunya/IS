@@ -28,8 +28,12 @@ namespace Maze
                 { 0, 1, 1, 0, 1, 1, 1, 1, 0, 1 },
                 { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 1, 1, 0, 1, 0, 1, 1, 1, 0 },
-                { 0, 0, 0, 0, 0, 1, 1, 0, 1, 0 },
-                { 1, 1, 1, 1, 3, 0, 1, 1, 3, 0 }
+                { 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 },
+                { 1, 0, 1, 1, 3, 0, 1, 1, 3, 0 },
+                { 0, 0, 1, 1, 1, 0, 1, 1, 1, 0 },
+                { 0, 1, 1, 1, 1, 0, 1, 1, 0, 0 },
+                { 0, 0, 0, 0, 1, 0, 1, 0, 0, 1 },
+                { 1, 0, 1, 3, 0, 0, 0, 0, 1, 1 }
             };
 
             int cellSize = 40;
@@ -78,8 +82,8 @@ namespace Maze
             List<Point> starts = maze.FindAllStarts();
             List<Point> ends = maze.FindAllExits();
 
-            if (starts.Any(start => start == new Point(-1, -1)) || ends == null || ends.Count == 0)
-            {
+            if (starts.Any(start => start == new Point(-1, -1)) ||  ends == null ||  ends.Count == 0)
+    {
                 RouteInfo.Text = "Старт или конец не найдены!";
                 return;
             }
@@ -87,16 +91,19 @@ namespace Maze
             allPaths.Clear();
             allPaths = mazeController.FindAllPaths(starts, ends);
 
-            // Очищаем ListBox и добавляем найденные пути в формате [номер] ([длина])
+            // Сортируем маршруты по длине
+            var sortedPaths = allPaths.OrderBy(path => path.Count).ToList();
+
+            // Очищаем ListBox и добавляем отсортированные пути в формате [номер] ([длина])
             PathsListBox.Items.Clear();
-            for (int i = 0; i < allPaths.Count; i++)
+            for (int i = 0; i < sortedPaths.Count; i++)
             {
-                var path = allPaths[i];
-                int length = path.Count; // Длина пути
+                var path = sortedPaths[i];
+                int length = path.Count;
                 PathsListBox.Items.Add($"Маршрут [{i + 1}] ({length})");
             }
 
-            RouteInfo.Text = allPaths.Count == 0 ? "Пути не найдены!" : $"Найдено путей: {allPaths.Count}";
+            RouteInfo.Text = sortedPaths.Count == 0 ? "Пути не найдены!" : $"Найдено путей: {sortedPaths.Count}";
         }
 
 
@@ -222,11 +229,13 @@ namespace Maze
         {
             if (sender is Rectangle rect)
             {
-                int x = (int)(Canvas.GetLeft(rect) / maze.CellSize);
-                int y = (int)(Canvas.GetTop(rect) / maze.CellSize);
+                int y = (int)(Canvas.GetLeft(rect) / maze.CellSize);
+                int x = (int)(Canvas.GetTop(rect) / maze.CellSize);
 
                 // Получаем выбранный тип клетки из ComboBox
-                int selectedType = int.Parse(((ComboBoxItem)CellTypeComboBox.SelectedItem)?.Tag.ToString() ?? "0");
+                int selectedType = int.Parse(((ComboBoxItem)CellTypeComboBox.SelectedItem)?.Tag.ToString());
+
+                Debug.WriteLine($"Выбранный тип:{selectedType}");
 
                 // Получаем текущий тип клетки
                 int currentType = maze.Cells[x, y];
@@ -236,11 +245,13 @@ namespace Maze
                 {
                     maze.Cells[x, y] = 0; // Устанавливаем пустую клетку
                     rect.Fill = Brushes.White; // Меняем цвет на белый
+
+                    Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> Тип:0");
                 }
                 else
                 {
                     // Обновляем клетку на выбранный тип
-                    maze.Cells[y, x] = selectedType; // Обновляем массив клеток
+                    maze.Cells[x, y] = selectedType; // Обновляем массив клеток
 
                     // Меняем цвет в зависимости от типа
                     rect.Fill = selectedType switch
@@ -251,12 +262,11 @@ namespace Maze
                         3 => Brushes.Red, // Выход
                         _ => Brushes.Transparent // Цвет по умолчанию
                     };
-                }
 
-                Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> Тип: {maze.Cells[x, y]}");
+                    Debug.WriteLine($"Ячейка изменена: ({x}, {y}) -> Тип: {maze.Cells[x, y]}");
+                }
             }
         }
-
     }
 
 
