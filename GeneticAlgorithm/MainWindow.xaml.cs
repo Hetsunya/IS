@@ -154,35 +154,38 @@ namespace GeneticAlgorithm
             {
                 usedIterations = iter + 1;
 
-                // Мутация
-                int[] mutated = (int[])original.Clone();
-                // Мутация в первой половине
-                int index1 = random.Next(0, 25);
-                mutated[index1] = random.Next(items[index1].MinQuantity, items[index1].MaxQuantity + 1);
-                // Мутация во второй половине
-                int index2 = random.Next(25, 50);
-                mutated[index2] = random.Next(items[index2].MinQuantity, items[index2].MaxQuantity + 1);
+                // Мутация: создаём две особи с одной мутацией
+                int[] mutated1 = (int[])original.Clone();
+                int[] mutated2 = (int[])original.Clone();
 
-                // Скрещивание
+                // Мутация в первой половине для первой особи
+                int index1 = random.Next(0, 25);
+                mutated1[index1] = random.Next(items[index1].MinQuantity, items[index1].MaxQuantity + 1);
+
+                // Мутация во второй половине для второй особи
+                int index2 = random.Next(25, 50);
+                mutated2[index2] = random.Next(items[index2].MinQuantity, items[index2].MaxQuantity + 1);
+
+                // Скрещивание двух мутировавших особей
                 int[] cross1 = new int[50];
                 int[] cross2 = new int[50];
                 for (int i = 0; i < 25; i++)
                 {
-                    cross1[i] = original[i];
-                    cross2[i] = mutated[i];
+                    cross1[i] = mutated1[i];
+                    cross2[i] = mutated2[i];
                 }
                 for (int i = 25; i < 50; i++)
                 {
-                    cross1[i] = mutated[i];
-                    cross2[i] = original[i];
+                    cross1[i] = mutated2[i];
+                    cross2[i] = mutated1[i];
                 }
 
                 // Оценка всех популяций
-                var populations = new[] { original, mutated, cross1, cross2 };
+                var populations = new[] { original, mutated1, mutated2, cross1, cross2 };
                 int bestPopIndex = 0;
                 int minFitness = CalculateFitness(original, targetSum);
 
-                for (int i = 1; i < 4; i++)
+                for (int i = 1; i < populations.Length; i++)
                 {
                     int fitness = CalculateFitness(populations[i], targetSum);
                     if (fitness < minFitness)
